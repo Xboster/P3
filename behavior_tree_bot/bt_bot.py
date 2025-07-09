@@ -22,7 +22,7 @@ from planet_wars import PlanetWars, finish_turn
 # You have to improve this tree or create an entire new one that is capable
 # of winning against all the 5 opponent bots
 #Test
-#Branch
+#branch
 def setup_behavior_tree():
 
     # Top-down construction of behavior tree
