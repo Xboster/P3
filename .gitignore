@@ -1,0 +1,38 @@
+# === Python cache and virtual env ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pkl
+*.egg-info/
+.env/
+.venv/
+env/
+venv/
+
+# === Logs and debug output ===
+*.log
+*.out
+*.err
+
+# === Text and temporary files ===
+*.txt
+*.tmp
+*.bak
+*.swp
+
+# === OS-specific files ===
+.DS_Store
+Thumbs.db
+
+# === VSCode and editor config ===
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# === class files ===
+*.xlsx
+*.pptx
+*.docx
