@@ -23,10 +23,12 @@ from planet_wars import PlanetWars, finish_turn
 
 def setup_behavior_tree():
     # Sequence to spread to neutral planets if available
-    spread_sequence = Sequence(name='Spread to Neutral Planets')
+    
+    spread_sequence = Sequence(name="Smart Spread to Neutral")
     neutral_check = Check(if_neutral_planet_available)
-    spread_action = Action(spread_to_strategic_neutral)
-    spread_sequence.child_nodes = [neutral_check, spread_action]
+    spread_to_neutral = Action(spread_to_nearest_capturable_neutral)
+    spread_sequence.child_nodes = [neutral_check, spread_to_neutral]
+
 
     # Fallback: do nothing if no neutral planets are left
     fallback = Action(do_nothing)
