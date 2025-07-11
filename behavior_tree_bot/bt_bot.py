@@ -18,26 +18,25 @@ from behavior_tree_bot.bt_nodes import Selector, Sequence, Action, Check
 
 from planet_wars import PlanetWars, finish_turn
 
-
 # You have to improve this tree or create an entire new one that is capable
 # of winning against all the 5 opponent bots
-#Test
+
 def setup_behavior_tree():
+    # Sequence to spread to neutral planets if available
+    spread_sequence = Sequence(name='Spread to Neutral Planets')
+    neutral_check = Check(if_neutral_planet_available)
+    spread_action = Action(spread_to_strategic_neutral)
+    spread_sequence.child_nodes = [neutral_check, spread_action]
 
-    # Top-down construction of behavior tree
-    root = Selector(name='High Level Ordering of Strategies')
+    # Fallback: do nothing if no neutral planets are left
+    fallback = Action(do_nothing)
 
-    offensive_plan = Sequence(name='Offensive Strategy')
-    largest_fleet_check = Check(have_largest_fleet)
-    attack = Action(attack_weakest_enemy_planet)
-    offensive_plan.child_nodes = [largest_fleet_check, attack]
-
-    spread_sequence = Sequence(name='Spread Strategy')
-    neutral_planet_check = Check(if_neutral_planet_available)
-    spread_action = Action(spread_to_weakest_neutral_planet)
-    spread_sequence.child_nodes = [neutral_planet_check, spread_action]
-
-    root.child_nodes = [offensive_plan, spread_sequence, attack.copy()]
+    # Root: Try to spread, else fallback
+    root = Selector(name='Capture Neutrals Then Idle')
+    root.child_nodes = [
+        spread_sequence,
+        fallback
+    ]
 
     logging.info('\n' + root.tree_to_string())
     return root

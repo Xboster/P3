@@ -1,6 +1,6 @@
 from copy import deepcopy
 import logging
-
+import random
 
 def log_execution(fn):
     def logged_fn(self, state):
@@ -90,3 +90,67 @@ class Action(Node):
 
     def __str__(self):
         return self.__class__.__name__ + ': ' + self.action_function.__name__
+
+############################### Decorator Nodes ##################################
+
+class Inverter(Node):
+    def __init__(self, child_node):
+        self.child_node = child_node
+
+    @log_execution
+    def execute(self, state):
+        return not self.child_node.execute(state)
+
+    def __str__(self):
+        return self.__class__.__name__ + ' -> ' + str(self.child_node)
+
+
+class AlwaysSucceed(Node):
+    def __init__(self, child_node):
+        self.child_node = child_node
+
+    @log_execution
+    def execute(self, state):
+        self.child_node.execute(state)
+        return True
+
+    def __str__(self):
+        return self.__class__.__name__ + ' -> ' + str(self.child_node)
+
+
+class AlwaysFail(Node):
+    def __init__(self, child_node):
+        self.child_node = child_node
+
+    @log_execution
+    def execute(self, state):
+        self.child_node.execute(state)
+        return False
+
+    def __str__(self):
+        return self.__class__.__name__ + ' -> ' + str(self.child_node)
+
+
+class LoopUntilFailed(Node):
+    def __init__(self, child_node):
+        self.child_node = child_node
+
+    @log_execution
+    def execute(self, state):
+        while True:
+            if not self.child_node.execute(state):
+                return False
+
+
+class RandomSelector(Composite):
+    @log_execution
+    def execute(self, state):
+        children = self.child_nodes[:]
+        random.shuffle(children)
+        for child_node in children:
+            if child_node.execute(state):
+                return True
+        return False
+
+    def __str__(self):
+        return self.__class__.__name__ + ': ' + self.name if self.name else ''
