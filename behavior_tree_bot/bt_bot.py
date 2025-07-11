@@ -59,7 +59,7 @@ def setup_behavior_tree():
     tree_string = root.tree_to_string()
     logging.info('\n' + tree_string)
 
-    # Save tree structure to a text file (for submission)
+    # Save tree structure to a text file 
     try:
         with open("behavior_tree.txt", "w") as f:
             f.write(tree_string)
@@ -68,7 +68,6 @@ def setup_behavior_tree():
 
     return root
 
-# You don't need to change this function
 def do_turn(state):
     behavior_tree.execute(planet_wars)
 
