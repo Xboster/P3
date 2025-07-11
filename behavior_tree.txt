@@ -1,0 +1,11 @@
+Selector: Main Strategy
+| Sequence: Defend Under Threat
+| | Check: is_any_planet_under_threat
+| | Action: reinforce_if_under_threat
+| Sequence: Safe Attack
+| | Check: can_safely_attack
+| | Action: smart_attack_enemy_planet
+| Sequence: Smart Spread to Neutral
+| | Check: if_neutral_planet_available
+| | Action: spread_to_nearest_capturable_neutral
+| Action: do_nothing
